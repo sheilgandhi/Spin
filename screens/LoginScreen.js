@@ -44,7 +44,7 @@ const LoginScreen = ({navigation}) => {
 
             <ThemeProvider theme={theme} >
                 <Button containerStyle={styles.button} onPress={signIn} title='Sign In' type='solid' />
-                <Button containerStyle={styles.button} onPress={() => navigation.navigate('Register')} title='Sign Up' type='outline' />
+                <Button containerStyle={styles.button} onPress={() => navigation.navigate('Sign Up')} title='Sign Up' type='outline' />
             </ThemeProvider>
             <View style={{ height: 100}} /> 
             {/* Extra padding from keyboard */}
