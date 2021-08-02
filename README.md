@@ -3,9 +3,10 @@
 ### Libraries
 
 - Expo Status Bar
-- React Navigation
+- React Native Navigation
+- React Native Elements
 
 ###### Colour Scheme
 
-Spinning A Yarn - SchemeColor
+Spinning A Yarn - SchemeColor <br/>
 (https://www.schemecolor.com/spinning-a-yarn-color-palette.php)
