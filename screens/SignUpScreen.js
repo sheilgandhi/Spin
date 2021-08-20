@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useState } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { StyleSheet, View, KeyboardAvoidingView } from 'react-native'
 import { Button, Input, Text, ThemeProvider } from "react-native-elements"
+import { auth } from '../firebase'
 
 const SignUpScreen = ({ navigation }) => {
     const [name, setName] = useState("");
@@ -9,7 +10,24 @@ const SignUpScreen = ({ navigation }) => {
     const [password, setPassword] = useState("");
     const [imageUrl, setImageUrl] = useState("");
 
-    const signUp = () => {}
+    // navigates before paint
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerBackTitle: "Back", // visible next to back button for iOS
+
+        })
+    }, [navigation])
+
+    const signUp = () => {
+        auth.createUserWithEmailAndPassword(email, password)
+        .then(authUser => {
+            authUser.user.updateProfile({
+                displayName: name,
+                photoURL: imageUrl || "https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png",
+            })
+        })
+        .catch((error) => alert(error.message));
+    }
 
     const theme = {
         colors: {
