@@ -8,7 +8,7 @@ const TopicTile = ({ id, chatName, enterChat }) => {
             <Avatar rounded source={{ uri: `https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png` }}/>
 
             <ListItem.Content>
-                <ListItem.Title style={{ fontWeight: "800" }}>Youtube</ListItem.Title>
+                <ListItem.Title style={{ fontWeight: "800" }}>{chatName}</ListItem.Title>
                 <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail"> {/* Truncates Text to 1 line */}
                     Youtube                
                 </ListItem.Subtitle>

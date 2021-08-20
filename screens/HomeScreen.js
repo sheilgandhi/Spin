@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useLayoutEffect, useState, useEffect } from 'react'
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native'
 import { Avatar } from 'react-native-elements'
 import { auth, db } from '../firebase'
@@ -6,10 +6,24 @@ import { AntDesign, SimpleLineIcons } from "@expo/vector-icons"
 import TopicTile from '../components/TopicTile'
 
 const HomeScreen = ({ navigation }) => {
+    const [chats, setChats] = useState([])
 
     const signOut = () => {
         auth.signOut().then(() => { navigation.replace("Login") })
     }
+
+    useEffect(() => {
+        const unsubscribe = db.collection('chats').onSnapshot((snapshot) =>
+            setChats(
+                snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    data: doc.data()
+                }))
+            )
+        );
+
+        return unsubscribe;
+    }, [])
 
     //navigates before paint
     useLayoutEffect(() => {
@@ -39,10 +53,13 @@ const HomeScreen = ({ navigation }) => {
     }, [navigation])
 
 
+
     return (
         <SafeAreaView>
             <ScrollView>
-                <TopicTile />
+            {chats.map(({ id, data: { chatName }}) => (
+                    <TopicTile key={id} id={id} chatName={chatName} />
+                ))}
             </ScrollView>
         </SafeAreaView>
     )
