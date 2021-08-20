@@ -28,7 +28,7 @@ const LoginScreen = ({navigation}) => {
         colors: {
           primary: '#e3337d',
         }
-      }
+    }
 
     return (
         // Keyboard avoiding for when keyboard needs to open up
