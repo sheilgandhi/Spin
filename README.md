@@ -1,5 +1,7 @@
 # Spin
 
+Spin is global forum, messaging-style app
+
 ### Libraries
 
 - Expo Status Bar
