@@ -19,7 +19,10 @@ const LoginScreen = ({navigation}) => {
     }, [])
 
 
-    const signIn = () => {}
+    const signIn = () => {
+        auth.signInWithEmailAndPassword(email, password)
+        .catch((error) => alert(error))
+    }
 
     const theme = {
         colors: {
