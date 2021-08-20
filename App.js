@@ -21,7 +21,7 @@ export default function App() {
     // NavigationContainer stacks screens
     <NavigationContainer> 
       <StatusBar style="auto" />
-      <Stack.Navigator  screenOptions={globalScreenOptions}>
+      <Stack.Navigator initialRouteName="Home" screenOptions={globalScreenOptions}>
         <Stack.Screen name='Login' component={LoginScreen} />
         <Stack.Screen name='Sign Up' component={SignUpScreen} />
         <Stack.Screen name='Home' component={HomeScreen} />
