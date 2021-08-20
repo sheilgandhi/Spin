@@ -28,7 +28,7 @@ const HomeScreen = ({ navigation }) => {
     //navigates before paint
     useLayoutEffect(() => {
         navigation.setOptions({
-            title: "Signal",
+            title: "Spin",
             headerStyle: { backgroundColor: "#e3337d" },
             headerTitleStyle: { color: "white" },
             headerTintColor: "white",
@@ -42,7 +42,7 @@ const HomeScreen = ({ navigation }) => {
             headerRight: () => (
                 <View style={{ flexDirection: 'row', justifyContent: "space-between", width: 80, marginRight: 20 }}>
                     <TouchableOpacity activeOpacity={0.5}>
-                        <AntDesign name="camerao" size={24} color="white" />
+                        <AntDesign name="infocirlceo" size={24} color="white" />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate("Add Chat")} activeOpacity={0.5}>
                         <SimpleLineIcons name="pencil" size={24} color="white" />
@@ -52,13 +52,18 @@ const HomeScreen = ({ navigation }) => {
         })
     }, [navigation])
 
-
+    const enterChat = (id, chatName) => {
+        navigation.navigate('Chat', {
+            id,
+            chatName,
+        })
+    }
 
     return (
         <SafeAreaView>
-            <ScrollView>
+            <ScrollView style={styles.container}>
             {chats.map(({ id, data: { chatName }}) => (
-                    <TopicTile key={id} id={id} chatName={chatName} />
+                    <TopicTile key={id} id={id} chatName={chatName} enterChat={enterChat}/>
                 ))}
             </ScrollView>
         </SafeAreaView>
@@ -67,4 +72,8 @@ const HomeScreen = ({ navigation }) => {
 
 export default HomeScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        height: "100%"
+    }
+})
