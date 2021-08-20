@@ -19,7 +19,7 @@ const HomeScreen = ({ navigation }) => {
             headerTitleStyle: { color: "white" },
             headerTintColor: "white",
             headerLeft: () => (
-                <View style={{ marginLeft: 20 }}>
+                <View style={{ marginRight: 20 }}>
                     <TouchableOpacity onPress={signOut} activeOpacity={0.5}>
                         <Avatar rounded source={{ uri: auth?.currentUser?.photoURL }}/>
                     </TouchableOpacity>
