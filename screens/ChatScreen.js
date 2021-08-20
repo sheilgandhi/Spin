@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Platform } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Platform, KeyboardAvoidingView } from 'react-native'
 import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons"
 import { Avatar } from 'react-native-elements'
 import { StatusBar } from 'expo-status-bar'
@@ -14,7 +14,7 @@ const ChatScreen = ({ navigation, route }) => {
             headerTitle: () => (
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Avatar rounded source={{ uri: `https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png`}} />
-                    <Text style={{ color: "white", marginLeft: 10, fontWeight: "700", fontSize: "18" }}>{route.params.chatName}</Text>
+                    <Text h1 style={{ color: "white", marginLeft: 10, fontWeight: "700" }}>{route.params.chatName}</Text>
                 </View>
             ),
             headerRight: () => (
@@ -30,10 +30,17 @@ const ChatScreen = ({ navigation, route }) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
             <StatusBar style="light" />
+            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container} keyboardVerticalOffset={90}>
+
+            </KeyboardAvoidingView>
         </SafeAreaView>
     )
 }
 
 export default ChatScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        
+    }
+})
