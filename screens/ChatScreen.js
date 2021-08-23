@@ -14,7 +14,6 @@ const ChatScreen = ({ navigation, route }) => {
     const scrollViewRef = useRef();
     const [image, setImage] = useState(null);
     const [imageURL, setImageURL] = useState("");
-    const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -72,15 +71,14 @@ const ChatScreen = ({ navigation, route }) => {
     }, [navigation, messages])
 
     const sendMessage = () => {
-
         db.collection('chats').doc(route.params.id).collection('messages').add({
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Servers timestamp to deal with timezones
-            message: input,
-            image: imageURL,
-            displayName: auth.currentUser.displayName,
-            email: auth.currentUser.email,
-            photoURL: auth.currentUser.photoURL
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Servers timestamp to deal with timezones
+                message: input,
+                displayName: auth.currentUser.displayName,
+                email: auth.currentUser.email,
+                photoURL: auth.currentUser.photoURL
         });
+
         console.log("Upload done")
         setInput(""); // Clears input
         setImage(null); // Clears image
@@ -88,29 +86,22 @@ const ChatScreen = ({ navigation, route }) => {
 
     }
 
-    async function uploadImage() {
-        // https://github.com/expo/expo/issues/2402#issuecomment-443726662
-        const blob = await new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.onload = function () {
-              resolve(xhr.response);
-            };
-            xhr.onerror = function (e) {
-              console.log(e);
-              reject(new TypeError("Network request failed"));
-            };
-            xhr.responseType = "blob";
-            xhr.open("GET", image, true);
-            xhr.send(null);
-          });
-        
-          const ref = firebase.storage().ref().child(uuid.v4());
-          const snapshot = await ref.put(blob);
-        
-          // We're done with the blob, close and release it
-          blob.close();
-        
-          return await snapshot.ref.getDownloadURL();
+    const uploadImage = async () => {
+        const response = await fetch(image)
+        const blob = await response.blob()
+
+        const task = firebase.storage().ref().child(Math.random.toString(12)).put(blob)
+
+        const taskProgress = () => console.log(`Uploaded: ${snapshot.bytesTransferred}`)
+
+        const taskCompleted = () => {
+            task.snapshot.ref.getDownloadURL()
+            .then((snapshot => sendMessage(snapshot)))
+        }
+
+        const taskError = snapshot => console.log(snapshot)
+
+        task.on("state_changed", taskProgress, taskError, taskCompleted)
     }
 
     useLayoutEffect(() => {
@@ -192,9 +183,9 @@ const ChatScreen = ({ navigation, route }) => {
                                 style={styles.input} 
                                 value={input} 
                                 onChangeText={(text) => setInput(text)} 
-                                onSubmitEditing={input === "" ? () => {} : sendMessage}
+                                onSubmitEditing={input === "" ? () => {} : sendMessage()}
                                 placeholder="Type a Message..." />
-                            <TouchableOpacity onPress={input === "" ? () => {} : sendMessage} activeOpacity={0.5}>
+                            <TouchableOpacity onPress={input === "" ? () => {} : sendMessage()} activeOpacity={0.5}>
                                 <Ionicons name="send" size={24} color="#e3337d" />
                             </TouchableOpacity>
                         </View>

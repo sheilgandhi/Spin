@@ -1,11 +1,12 @@
 import { Camera } from 'expo-camera';
 import React, { useEffect, useState, useRef } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
 
 const CameraScreen = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.front);
-    const cameraRef = useRef();
+    const [camera, setCamera] = useState(null);
+    const [image, setImage] = useState(null);
 
     useEffect(() => {
         (async () => {
@@ -21,9 +22,16 @@ const CameraScreen = ({ navigation }) => {
         return <Text>No access to camera</Text>;
     }
 
+    const takePicture = async () => {
+        if(camera){
+            const data = await camera.takePictureAsync(null)
+            setImage(data.uri)
+        }
+    }
+
     return (
         <View style={styles.container}>
-          <Camera style={styles.camera} type={type} ratio={"16:9"} ref={cameraRef}>
+          <Camera style={styles.camera} type={type} ratio={"16:9"} ref={ref => setCamera(ref)}>
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.button}
@@ -35,7 +43,11 @@ const CameraScreen = ({ navigation }) => {
                   );
                 }}>
                 <Text style={styles.text}> Flip </Text>
-                
+                <Text onPress={takePicture} style={styles.text}>SNAP</Text>
+                {
+                    image && 
+                    <Image source={{uri: image}} style={{ flex: 1 }}/>
+                }
               </TouchableOpacity>
             </View>
           </Camera>
