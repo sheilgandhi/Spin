@@ -10,6 +10,8 @@ const ChatScreen = ({ navigation, route }) => {
     const [input, setInput] = useState('')
     const [messages, setMessages] = useState([])
 
+    console.log(messages)
+
     useLayoutEffect(() => {
         navigation.setOptions({
             title: "Chat",
@@ -17,7 +19,11 @@ const ChatScreen = ({ navigation, route }) => {
             headerBackTitleVisible: false,
             headerTitle: () => (
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Avatar rounded source={{ uri: `https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png`}} />
+                    <Avatar 
+                        rounded 
+                        source={{ 
+                            uri: messages[messages.length-1]?.data.photoURL,
+                        }} />
                     <Text h1 style={{ color: "white", marginLeft: 10, fontWeight: "700" }}>{route.params.chatName}</Text>
                 </View>
             ),
@@ -29,7 +35,7 @@ const ChatScreen = ({ navigation, route }) => {
                 </View>
             )
         })
-    }, [])
+    }, [navigation, messages])
 
     const sendMessage = () => {
         db.collection('chats').doc(route.params.id).collection('messages').add({
@@ -66,7 +72,7 @@ const ChatScreen = ({ navigation, route }) => {
             <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} enabled style={styles.container} keyboardVerticalOffset={175}>
                 <>
                     {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>  */}
-                        <ScrollView contentContainerStyle={{ paddingTop: 15, flex: 1, justifyContent: 'flex-end' }}>
+                        <ScrollView contentContainerStyle={{ paddingTop: 15 }} fadingEdgeLength={50}  >
                             {
                                 messages.map(({ id, data }) => (
                                     data.email === auth.currentUser.email ? (
@@ -121,6 +127,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
 
+    },
+    scroll: {
+        flex: 1,
+        justifyContent: 'flex-end',
     },
     sender: {
         padding: 15,
