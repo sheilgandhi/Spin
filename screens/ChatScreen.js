@@ -76,7 +76,7 @@ const ChatScreen = ({ navigation, route }) => {
                             contentContainerStyle={{ paddingTop: 15 }} 
                             fadingEdgeLength={50} 
                             ref={scrollViewRef}
-                            onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })} 
+                            onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: false })} 
                         >
                             {
                                 messages.map(({ id, data }) => (
@@ -109,13 +109,19 @@ const ChatScreen = ({ navigation, route }) => {
                         </ScrollView>
 
                         <View style={styles.footer}>
+                            <TouchableOpacity onPress={() => {}} activeOpacity={0.5} style={{ marginRight: 15 }}>
+                                <Ionicons name="camera" size={26} color="#e3337d" />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => {}} activeOpacity={0.5} style={{ marginRight: 15 }}>
+                                <Ionicons name="image" size={24} color="#e3337d" />
+                            </TouchableOpacity>
                             <TextInput 
                                 style={styles.input} 
                                 value={input} 
                                 onChangeText={(text) => setInput(text)} 
-                                onSubmitEditing={sendMessage}
+                                onSubmitEditing={input === "" ? () => {} : sendMessage}
                                 placeholder="Type a Message..." />
-                            <TouchableOpacity onPress={sendMessage} activeOpacity={0.5}>
+                            <TouchableOpacity onPress={input === "" ? () => {} : sendMessage} activeOpacity={0.5}>
                                 <Ionicons name="send" size={24} color="#e3337d" />
                             </TouchableOpacity>
                         </View>
@@ -149,7 +155,7 @@ const styles = StyleSheet.create({
     senderText: {
         color: "black",
         fontWeight: "500",
-        marginLeft: 10,
+        marginRight: 10,
     },
     reciever: {
         padding: 15,
@@ -176,6 +182,7 @@ const styles = StyleSheet.create({
     footer: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
         width: "100%",
         padding: 15
     },

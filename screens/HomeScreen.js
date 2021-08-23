@@ -40,12 +40,9 @@ const HomeScreen = ({ navigation }) => {
                 </View>
             ),
             headerRight: () => (
-                <View style={{ flexDirection: 'row', justifyContent: "space-between", width: 80, marginRight: 20 }}>
+                <View style={{ marginRight: 20 }}>
                     <TouchableOpacity onPress={() => navigation.navigate("About")} activeOpacity={0.5}>
                         <AntDesign name="infocirlceo" size={24} color="white" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("Add Chat")} activeOpacity={0.5}>
-                        <SimpleLineIcons name="pencil" size={24} color="white" />
                     </TouchableOpacity>
                 </View>
             ),
@@ -66,6 +63,11 @@ const HomeScreen = ({ navigation }) => {
                     <TopicTile key={id} id={id} chatName={chatName} enterChat={enterChat}/>
                 ))}
             </ScrollView>
+            <View style={styles.addChat}>
+                <TouchableOpacity onPress={() => navigation.navigate("Add Chat")} activeOpacity={0.5}>
+                    <SimpleLineIcons name="pencil" size={30} color="white" />
+                </TouchableOpacity>
+            </View>
         </SafeAreaView>
     )
 }
@@ -75,5 +77,13 @@ export default HomeScreen
 const styles = StyleSheet.create({
     container: {
         height: "100%"
+    },
+    addChat: {
+        position: "absolute",
+        bottom: 30,
+        right: 30,
+        backgroundColor: "#e3337d",
+        padding: 15,
+        borderRadius: 40,
     }
 })
