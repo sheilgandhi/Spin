@@ -1,10 +1,11 @@
 import { Camera } from 'expo-camera';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 const CameraScreen = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState(null);
-    const [type, setType] = useState(Camera.Constants.Type.back);
+    const [type, setType] = useState(Camera.Constants.Type.front);
+    const cameraRef = useRef();
 
     useEffect(() => {
         (async () => {
@@ -22,7 +23,7 @@ const CameraScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-          <Camera style={styles.camera} type={type} ratio={"16:9"}>
+          <Camera style={styles.camera} type={type} ratio={"16:9"} ref={cameraRef}>
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.button}
@@ -34,6 +35,7 @@ const CameraScreen = ({ navigation }) => {
                   );
                 }}>
                 <Text style={styles.text}> Flip </Text>
+                
               </TouchableOpacity>
             </View>
           </Camera>

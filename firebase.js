@@ -3,6 +3,7 @@ import * as firebase from "firebase";
 import "firebase/auth";
 //import "firebase/database";
 import "firebase/firestore";
+import { LogBox } from "react-native";
 //import "firebase/functions";
 //import "firebase/storage";
 
@@ -25,5 +26,7 @@ if (firebase.apps.length === 0) {
 
 const db = app.firestore();
 const auth = firebase.auth();
+
+LogBox.ignoreLogs([`Setting a timer for a long period`]);
 
 export { db, auth }

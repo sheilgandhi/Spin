@@ -1,15 +1,44 @@
-import React, { useLayoutEffect, useState, useRef } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Keyboard, Platform, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native'
+import React, { useLayoutEffect, useState, useEffect, useRef } from 'react'
+import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, Keyboard, Platform, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native'
 import { AntDesign, Ionicons } from "@expo/vector-icons"
 import { Avatar } from 'react-native-elements'
 import { StatusBar } from 'expo-status-bar'
 import { auth, db } from '../firebase'
 import * as firebase from "firebase";
+import * as ImagePicker from 'expo-image-picker';
 
 const ChatScreen = ({ navigation, route }) => {
     const [input, setInput] = useState('')
     const [messages, setMessages] = useState([])
     const scrollViewRef = useRef();
+    const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    })();
+  }, []);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(image);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
 
     // console.log(messages)
 
@@ -48,6 +77,7 @@ const ChatScreen = ({ navigation, route }) => {
         });
 
         setInput(""); // Clears input
+        setImage(null); // Clears image
         Keyboard.dismiss(); // Hides Keyboard
 
     }
@@ -112,9 +142,12 @@ const ChatScreen = ({ navigation, route }) => {
                             <TouchableOpacity onPress={() => navigation.navigate("Camera")} activeOpacity={0.5} style={{ marginRight: 15 }}>
                                 <Ionicons name="camera" size={26} color="#e3337d" />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => {}} activeOpacity={0.5} style={{ marginRight: 15 }}>
+                            <TouchableOpacity onPress={pickImage} activeOpacity={0.5} style={{ marginRight: 15 }}>
                                 <Ionicons name="image" size={24} color="#e3337d" />
                             </TouchableOpacity>
+                            {image &&
+                                <Image source={{ uri: image }} style={{ width: 30, height: 30, marginRight: 15 }} />
+                            }
                             <TextInput 
                                 style={styles.input} 
                                 value={input} 
