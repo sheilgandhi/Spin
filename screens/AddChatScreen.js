@@ -45,7 +45,7 @@ const AddChatScreen = ({ navigation }) => {
                 }
             />
             <ThemeProvider theme={theme}>
-                <Button onPress={createChat} title="Create Chat" type="solid" />
+                <Button disabled={input === "" ? true : false} onPress={createChat} title="Create Chat" type="solid" />
             </ThemeProvider>
         </View>
     )
