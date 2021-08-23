@@ -71,8 +71,13 @@ const ChatScreen = ({ navigation, route }) => {
             <StatusBar style="light" />
             <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} enabled style={styles.container} keyboardVerticalOffset={175}>
                 <>
-                    {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>  */}
-                        <ScrollView contentContainerStyle={{ paddingTop: 15 }} fadingEdgeLength={50}  >
+                        <ScrollView 
+                            contentContainerStyle={{ paddingTop: 15 }} 
+                            fadingEdgeLength={50} 
+                            ref={ref => this.scrollView = ref} 
+                            onContentSizeChange={(_contentWidth, _contentHeight)=>{
+                                this.scrollView.scrollToEnd({animated: false}); }} 
+                        >
                             {
                                 messages.map(({ id, data }) => (
                                     data.email === auth.currentUser.email ? (
@@ -102,7 +107,6 @@ const ChatScreen = ({ navigation, route }) => {
                                 ))
                             }
                         </ScrollView>
-                    {/* </TouchableWithoutFeedback> */}
 
                         <View style={styles.footer}>
                             <TextInput 
