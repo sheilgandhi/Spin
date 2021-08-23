@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useState, useRef } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, TouchableWithoutFeedback, TouchableOpacity, Keyboard, Platform, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native'
 import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons"
 import { Avatar } from 'react-native-elements'
@@ -9,6 +9,7 @@ import * as firebase from "firebase";
 const ChatScreen = ({ navigation, route }) => {
     const [input, setInput] = useState('')
     const [messages, setMessages] = useState([])
+    const scrollViewRef = useRef();
 
     console.log(messages)
 
@@ -29,7 +30,7 @@ const ChatScreen = ({ navigation, route }) => {
             ),
             headerRight: () => (
                 <View style={{ flexDirection: 'row', justifyContent: "flex-end", width: 80, marginRight: 20 }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("About")} activeOpacity={0.5}>
                         <AntDesign name="infocirlceo" size={24} color="white" />
                     </TouchableOpacity>
                 </View>
@@ -74,9 +75,8 @@ const ChatScreen = ({ navigation, route }) => {
                         <ScrollView 
                             contentContainerStyle={{ paddingTop: 15 }} 
                             fadingEdgeLength={50} 
-                            ref={ref => this.scrollView = ref} 
-                            onContentSizeChange={(_contentWidth, _contentHeight)=>{
-                                this.scrollView.scrollToEnd({animated: false}); }} 
+                            ref={scrollViewRef}
+                            onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })} 
                         >
                             {
                                 messages.map(({ id, data }) => (
