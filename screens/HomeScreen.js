@@ -41,7 +41,7 @@ const HomeScreen = ({ navigation }) => {
             ),
             headerRight: () => (
                 <View style={{ flexDirection: 'row', justifyContent: "space-between", width: 80, marginRight: 20 }}>
-                    <TouchableOpacity activeOpacity={0.5}>
+                    <TouchableOpacity onPress={() => navigation.navigate("About")} activeOpacity={0.5}>
                         <AntDesign name="infocirlceo" size={24} color="white" />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate("Add Chat")} activeOpacity={0.5}>
