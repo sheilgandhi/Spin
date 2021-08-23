@@ -6,12 +6,15 @@ import { StatusBar } from 'expo-status-bar'
 import { auth, db } from '../firebase'
 import * as firebase from "firebase";
 import * as ImagePicker from 'expo-image-picker';
+import uuid from "uuid";
 
 const ChatScreen = ({ navigation, route }) => {
     const [input, setInput] = useState('')
     const [messages, setMessages] = useState([])
     const scrollViewRef = useRef();
     const [image, setImage] = useState(null);
+    const [imageURL, setImageURL] = useState("");
+    const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -36,6 +39,7 @@ const ChatScreen = ({ navigation, route }) => {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      uploadImage();    
     }
   };
 
@@ -68,18 +72,45 @@ const ChatScreen = ({ navigation, route }) => {
     }, [navigation, messages])
 
     const sendMessage = () => {
+
         db.collection('chats').doc(route.params.id).collection('messages').add({
             timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Servers timestamp to deal with timezones
             message: input,
+            image: imageURL,
             displayName: auth.currentUser.displayName,
             email: auth.currentUser.email,
             photoURL: auth.currentUser.photoURL
         });
-
+        console.log("Upload done")
         setInput(""); // Clears input
         setImage(null); // Clears image
         Keyboard.dismiss(); // Hides Keyboard
 
+    }
+
+    async function uploadImage() {
+        // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+        const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+              resolve(xhr.response);
+            };
+            xhr.onerror = function (e) {
+              console.log(e);
+              reject(new TypeError("Network request failed"));
+            };
+            xhr.responseType = "blob";
+            xhr.open("GET", image, true);
+            xhr.send(null);
+          });
+        
+          const ref = firebase.storage().ref().child(uuid.v4());
+          const snapshot = await ref.put(blob);
+        
+          // We're done with the blob, close and release it
+          blob.close();
+        
+          return await snapshot.ref.getDownloadURL();
     }
 
     useLayoutEffect(() => {
@@ -116,6 +147,9 @@ const ChatScreen = ({ navigation, route }) => {
                                         <Avatar rounded size={30} position="absolute" bottom={-15} right={-5} source={{
                                             uri: data.photoURL
                                         }}/>
+                                        { data.image &&
+                                            <Image source={{ uri: data.image }} style={{ width: "90%", height: 50, marginRight: 15 }} />
+                                        }
                                         <Text style={styles.senderText}>
                                             {data.message}
                                         </Text>
@@ -126,12 +160,18 @@ const ChatScreen = ({ navigation, route }) => {
                                         <Avatar rounded size={30} position="absolute" bottom={-15} left={-5} source={{
                                             uri: data.photoURL
                                         }}/>
-                                        <Text style={styles.recieverText}>
-                                            {data.message}
-                                        </Text>
                                         <Text style={styles.recieverName}>
                                             {data.displayName}
                                         </Text>
+                                        { data.image &&
+                                            <View>
+                                            <Image source={{ uri: data.image }} style={{ width: "100%", height: 50, marginRight: 15 }} />
+                                            </View>
+                                        }
+                                        <Text style={styles.recieverText}>
+                                            {data.message}
+                                        </Text>
+                                        
                                     </View>
                                     )
                                 ))
@@ -204,13 +244,14 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "500",
         marginLeft: 10,
-        marginBottom: 15,
     },
     recieverName: {
-        left: 10,
+        position: "absolute",
+        left: 30,
+        bottom: -15,
         paddingRight: 10,
         fontSize: 10,
-        color: "white"
+        color: "black",
     },
     footer: {
         flexDirection: 'row',
