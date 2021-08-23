@@ -72,7 +72,9 @@ const ChatScreen = ({ navigation, route }) => {
                                     data.email === auth.currentUser.email ? (
                                     // sender
                                     <View key={id} style={styles.sender}>
-                                        <Avatar />
+                                        <Avatar rounded size={30} position="absolute" bottom={-15} right={-5} source={{
+                                            uri: data.photoURL
+                                        }}/>
                                         <Text style={styles.senderText}>
                                             {data.message}
                                         </Text>
@@ -80,9 +82,14 @@ const ChatScreen = ({ navigation, route }) => {
                                     ) : (
                                     // reciever 
                                     <View  key={id} style={styles.reciever}>
-                                        <Avatar />
+                                        <Avatar rounded size={30} position="absolute" bottom={-15} left={-5} source={{
+                                            uri: data.photoURL
+                                        }}/>
                                         <Text style={styles.recieverText}>
                                             {data.message}
+                                        </Text>
+                                        <Text style={styles.recieverName}>
+                                            {data.displayName}
                                         </Text>
                                     </View>
                                     )
@@ -115,6 +122,43 @@ const styles = StyleSheet.create({
         flex: 1,
 
     },
+    sender: {
+        padding: 15,
+        backgroundColor: '#ececec',
+        alignSelf: 'flex-end',
+        borderRadius: 20,
+        marginRight: 15,
+        marginBottom: 20,
+        maxWidth: "80%",
+        position: "relative",
+    },
+    senderText: {
+        color: "white",
+        fontWeight: "500",
+        marginLeft: 10,
+    },
+    reciever: {
+        padding: 15,
+        backgroundColor: "#e3337d",
+        alignSelf: "flex-start",
+        borderRadius: 20,
+        margin: 15,
+        maxWidth: "80%",
+        position: "relative",
+
+    },
+    recieverText: {
+        color: "white",
+        fontWeight: "500",
+        marginLeft: 10,
+        marginBottom: 15,
+    },
+    recieverName: {
+        left: 10,
+        paddingRight: 10,
+        fontSize: 10,
+        color: "white"
+    },
     footer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -132,17 +176,4 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 30,
     },
-    sender: {
-        padding: 15,
-        backgroundColor: '#ececec',
-        alignSelf: 'flex-end',
-        borderRadius: 20,
-        marginRight: 15,
-        marginBottom: 20,
-        maxWidth: "80%",
-        position: "relative"
-    },
-    senderText: {},
-    reciever: {},
-    recieverText: {}
 })
