@@ -25,7 +25,7 @@ const TopicTile = ({ id, chatName, enterChat }) => {
 
             <ListItem.Content>
                 <ListItem.Title style={{ fontWeight: "800" }}>{chatName}</ListItem.Title>
-                <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail"> {/* Truncates Text to 1 line */}
+                <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail" style={{ marginLeft: -3.5}}> {/* Truncates Text to 1 line */}
                     {messages?.[0]?.displayName}{messages?.[0]?.message ? `:` : ``} {messages?.[0]?.message}             
                 </ListItem.Subtitle>
             </ListItem.Content>
