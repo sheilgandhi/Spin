@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState, useRef } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, TouchableWithoutFeedback, TouchableOpacity, Keyboard, Platform, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native'
-import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons"
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Keyboard, Platform, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native'
+import { AntDesign, Ionicons } from "@expo/vector-icons"
 import { Avatar } from 'react-native-elements'
 import { StatusBar } from 'expo-status-bar'
 import { auth, db } from '../firebase'
@@ -11,7 +11,7 @@ const ChatScreen = ({ navigation, route }) => {
     const [messages, setMessages] = useState([])
     const scrollViewRef = useRef();
 
-    console.log(messages)
+    // console.log(messages)
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -109,7 +109,7 @@ const ChatScreen = ({ navigation, route }) => {
                         </ScrollView>
 
                         <View style={styles.footer}>
-                            <TouchableOpacity onPress={() => {}} activeOpacity={0.5} style={{ marginRight: 15 }}>
+                            <TouchableOpacity onPress={() => navigation.navigate("Camera")} activeOpacity={0.5} style={{ marginRight: 15 }}>
                                 <Ionicons name="camera" size={26} color="#e3337d" />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {}} activeOpacity={0.5} style={{ marginRight: 15 }}>
