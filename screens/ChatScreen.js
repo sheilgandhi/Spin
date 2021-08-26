@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, Keyboard
 import { AntDesign, Ionicons } from "@expo/vector-icons"
 import { Avatar } from 'react-native-elements'
 import { StatusBar } from 'expo-status-bar'
-import { auth, db } from '../firebase'
+import { auth, db, storage } from '../firebase'
 import * as firebase from "firebase";
 import * as ImagePicker from 'expo-image-picker';
 import uuid from "uuid";
@@ -34,12 +34,13 @@ const ChatScreen = ({ navigation, route }) => {
       quality: 1,
     });
 
-    console.log(image);
+    console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);
-      uploadImage();    
+      console.log(image)
     }
+
   };
 
 
@@ -71,6 +72,9 @@ const ChatScreen = ({ navigation, route }) => {
     }, [navigation, messages])
 
     const sendMessage = () => {
+        if(input === ""){
+            return;
+        }
         db.collection('chats').doc(route.params.id).collection('messages').add({
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Servers timestamp to deal with timezones
                 message: input,
@@ -81,22 +85,38 @@ const ChatScreen = ({ navigation, route }) => {
 
         console.log("Upload done")
         setInput(""); // Clears input
-        setImage(null); // Clears image
         Keyboard.dismiss(); // Hides Keyboard
 
+    }
+
+    const sendMessageWithImage = (image) => {
+        db.collection('chats').doc(route.params.id).collection('messages').add({
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Servers timestamp to deal with timezones
+            message: input,
+            image,
+            displayName: auth.currentUser.displayName,
+            email: auth.currentUser.email,
+            photoURL: auth.currentUser.photoURL
+        });
+        console.log("Upload done with Image")
+        setInput(""); // Clears input
+        setImage(null); // Clears image
+        Keyboard.dismiss(); // Hides Keyboard
     }
 
     const uploadImage = async () => {
         const response = await fetch(image)
         const blob = await response.blob()
 
-        const task = firebase.storage().ref().child(Math.random.toString(12)).put(blob)
+        const task = storage.ref().child(Math.random.toString(12)).put(blob)
 
         const taskProgress = () => console.log(`Uploaded: ${snapshot.bytesTransferred}`)
 
         const taskCompleted = () => {
-            task.snapshot.ref.getDownloadURL()
-            .then((snapshot => sendMessage(snapshot)))
+            task.snapshot.ref.getDownloadURL().then((snapshot) => {
+                sendMessageWithImage(snapshot);
+                console.log(snapshot)
+            })
         }
 
         const taskError = snapshot => console.log(snapshot)
@@ -183,9 +203,9 @@ const ChatScreen = ({ navigation, route }) => {
                                 style={styles.input} 
                                 value={input} 
                                 onChangeText={(text) => setInput(text)} 
-                                onSubmitEditing={input === "" ? () => {} : sendMessage()}
+                                onSubmitEditing={image ? uploadImage : sendMessage}
                                 placeholder="Type a Message..." />
-                            <TouchableOpacity onPress={input === "" ? () => {} : sendMessage()} activeOpacity={0.5}>
+                            <TouchableOpacity onPress={image ? uploadImage : sendMessage} activeOpacity={0.5}>
                                 <Ionicons name="send" size={24} color="#e3337d" />
                             </TouchableOpacity>
                         </View>

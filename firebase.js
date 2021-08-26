@@ -5,7 +5,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import { LogBox } from "react-native";
 //import "firebase/functions";
-//import "firebase/storage";
+import "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDyKbTGAW9xkyv3gmygmBGd4WmSN-q6J84",
@@ -26,7 +26,8 @@ if (firebase.apps.length === 0) {
 
 const db = app.firestore();
 const auth = firebase.auth();
+const storage = firebase.storage();
 
 LogBox.ignoreLogs([`Setting a timer for a long period`]);
 
-export { db, auth }
+export { db, auth, storage }
