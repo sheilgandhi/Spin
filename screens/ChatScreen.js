@@ -13,7 +13,6 @@ const ChatScreen = ({ navigation, route }) => {
     const [messages, setMessages] = useState([])
     const scrollViewRef = useRef();
     const [image, setImage] = useState(null);
-    const [imageURL, setImageURL] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -34,7 +33,7 @@ const ChatScreen = ({ navigation, route }) => {
       quality: 1,
     });
 
-    console.log(result);
+    // console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);
@@ -72,56 +71,44 @@ const ChatScreen = ({ navigation, route }) => {
     }, [navigation, messages])
 
     const sendMessage = () => {
-        if(input === ""){
+        if(!image && input === ""){
             return;
         }
+
         db.collection('chats').doc(route.params.id).collection('messages').add({
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Servers timestamp to deal with timezones
                 message: input,
                 displayName: auth.currentUser.displayName,
                 email: auth.currentUser.email,
                 photoURL: auth.currentUser.photoURL
-        });
+        }).then(
+            doc => {
+                if(image){
+                    (async () => {
+                        const res = await fetch(image)
+                        const blob = await res.blob()
 
-        console.log("Upload done")
+                    const uploadTask = storage.ref(`posts/${doc.id}`).put(blob);
+                    // console.log(uploadTask)
+                    setImage(null)
+
+                    uploadTask.on('state_change', null, error => console.error(error), () => {
+                        // when upload completes
+                        storage.ref(`posts`).child(doc.id).getDownloadURL().then(url => {
+                            db.collection('chats').doc(route.params.id).collection('messages').doc(doc.id).set({
+                                postImage: url,
+                            }, { merge: true })
+                        })
+                    })
+                })()
+                }
+            }
+        )
+
+        // console.log("Upload done")
         setInput(""); // Clears input
         Keyboard.dismiss(); // Hides Keyboard
 
-    }
-
-    const sendMessageWithImage = (image) => {
-        db.collection('chats').doc(route.params.id).collection('messages').add({
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Servers timestamp to deal with timezones
-            message: input,
-            image,
-            displayName: auth.currentUser.displayName,
-            email: auth.currentUser.email,
-            photoURL: auth.currentUser.photoURL
-        });
-        console.log("Upload done with Image")
-        setInput(""); // Clears input
-        setImage(null); // Clears image
-        Keyboard.dismiss(); // Hides Keyboard
-    }
-
-    const uploadImage = async () => {
-        const response = await fetch(image)
-        const blob = await response.blob()
-
-        const task = storage.ref().child(Math.random.toString(12)).put(blob)
-
-        const taskProgress = () => console.log(`Uploaded: ${snapshot.bytesTransferred}`)
-
-        const taskCompleted = () => {
-            task.snapshot.ref.getDownloadURL().then((snapshot) => {
-                sendMessageWithImage(snapshot);
-                console.log(snapshot)
-            })
-        }
-
-        const taskError = snapshot => console.log(snapshot)
-
-        task.on("state_changed", taskProgress, taskError, taskCompleted)
     }
 
     useLayoutEffect(() => {
@@ -146,20 +133,21 @@ const ChatScreen = ({ navigation, route }) => {
                 <>
                         <ScrollView 
                             contentContainerStyle={{ paddingTop: 15 }} 
-                            fadingEdgeLength={50} 
+                            // fadingEdgeLength={50} 
                             ref={scrollViewRef}
                             onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: false })} 
                         >
                             {
                                 messages.map(({ id, data }) => (
+                                    console.log(data),
                                     data.email === auth.currentUser.email ? (
                                     // sender
                                     <View key={id} style={styles.sender}>
                                         <Avatar rounded size={30} position="absolute" bottom={-15} right={-5} source={{
                                             uri: data.photoURL
                                         }}/>
-                                        { data.image &&
-                                            <Image source={{ uri: data.image }} style={{ width: "90%", height: 50, marginRight: 15 }} />
+                                        { data.postImage &&
+                                            <Image source={{ uri: data.postImage }} style={{ width: 300, height: 150, marginRight: 15 }} />
                                         }
                                         <Text style={styles.senderText}>
                                             {data.message}
@@ -167,17 +155,15 @@ const ChatScreen = ({ navigation, route }) => {
                                     </View>
                                     ) : (
                                     // reciever 
-                                    <View  key={id} style={styles.reciever}>
+                                    <View key={id} style={styles.reciever}>
                                         <Avatar rounded size={30} position="absolute" bottom={-15} left={-5} source={{
                                             uri: data.photoURL
                                         }}/>
                                         <Text style={styles.recieverName}>
                                             {data.displayName}
                                         </Text>
-                                        { data.image &&
-                                            <View>
-                                            <Image source={{ uri: data.image }} style={{ width: "100%", height: 50, marginRight: 15 }} />
-                                            </View>
+                                        { data.postImage &&
+                                            <Image source={{ uri: data.postImage }} style={{ width: 300, height: 150, marginRight: 15 }} />
                                         }
                                         <Text style={styles.recieverText}>
                                             {data.message}
@@ -190,9 +176,9 @@ const ChatScreen = ({ navigation, route }) => {
                         </ScrollView>
 
                         <View style={styles.footer}>
-                            <TouchableOpacity onPress={() => navigation.navigate("Camera")} activeOpacity={0.5} style={{ marginRight: 15 }}>
+                            {/* <TouchableOpacity onPress={() => navigation.navigate("Camera")} activeOpacity={0.5} style={{ marginRight: 15 }}>
                                 <Ionicons name="camera" size={26} color="#e3337d" />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                             <TouchableOpacity onPress={pickImage} activeOpacity={0.5} style={{ marginRight: 15 }}>
                                 <Ionicons name="image" size={24} color="#e3337d" />
                             </TouchableOpacity>
@@ -203,9 +189,9 @@ const ChatScreen = ({ navigation, route }) => {
                                 style={styles.input} 
                                 value={input} 
                                 onChangeText={(text) => setInput(text)} 
-                                onSubmitEditing={image ? uploadImage : sendMessage}
+                                onSubmitEditing={sendMessage}
                                 placeholder="Type a Message..." />
-                            <TouchableOpacity onPress={image ? uploadImage : sendMessage} activeOpacity={0.5}>
+                            <TouchableOpacity onPress={sendMessage} activeOpacity={0.5}>
                                 <Ionicons name="send" size={24} color="#e3337d" />
                             </TouchableOpacity>
                         </View>
@@ -246,7 +232,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#e3337d",
         alignSelf: "flex-start",
         borderRadius: 20,
-        margin: 15,
+        marginLeft: 15,
+        marginBottom: 20,
         maxWidth: "80%",
         position: "relative",
 
