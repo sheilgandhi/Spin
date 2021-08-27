@@ -41,7 +41,7 @@ const AddChatScreen = ({ navigation }) => {
                 onChangeText={(text) => setInput(text)} 
                 onSubmitEditing={createChat}
                 leftIcon={
-                    <Icon name="wechat" type="antdesign" size={24} color="black" />
+                    <Icon name="commenting-o" type="fontawesome" size={24} color="black" />
                 }
             />
             <ThemeProvider theme={theme}>
