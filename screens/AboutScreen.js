@@ -2,6 +2,10 @@ import React from 'react'
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 
 const AboutScreen = ({ navigation }) => {
+
+    /**
+     * In a ScrollView Text is provided with an app description and rules of service
+     */
     return (
         <View>
             <ScrollView contentContainerStyle={{ padding: 15 }}>
