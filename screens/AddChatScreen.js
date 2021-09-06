@@ -7,6 +7,10 @@ import { db } from '../firebase'
 const AddChatScreen = ({ navigation }) => {
     const [input, setInput] = useState("");
 
+    /**
+     * Asynchronuously performs (C)RUD - Creates new Chat
+     * Then navigates back to Home Screen
+     */
     const createChat = async () => {
         await db
         .collection('chats')
@@ -19,6 +23,9 @@ const AddChatScreen = ({ navigation }) => {
         .catch((error) => alert(error));
     };
 
+    /**
+     * Masthead Name of Screen
+     */
     useLayoutEffect(() => {
         navigation.setOptions({
             title: "Add a New Group",
@@ -27,12 +34,19 @@ const AddChatScreen = ({ navigation }) => {
         })
     }, [navigation]);
 
+    /**
+     * Provides appropriate styling props to React Native Elements Button
+     */
     const theme = {
         colors: {
           primary: '#e3337d',
         }
     }
-      
+     
+    /**
+     * Renders an input which fires off appropriate functions
+     * Button is disabled without text input
+     */
     return (
         <View style={styles.container}>
             <Input 
