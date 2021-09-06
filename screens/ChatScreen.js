@@ -6,7 +6,8 @@ import { StatusBar } from 'expo-status-bar'
 import { auth, db, storage } from '../firebase'
 import * as firebase from "firebase";
 import * as ImagePicker from 'expo-image-picker';
-import uuid from "uuid";
+import SenderBubble from '../components/SenderBubble'
+import ReceiverBubble from '../components/ReceiverBubble'
 
 const ChatScreen = ({ navigation, route }) => {
     const [input, setInput] = useState('')
@@ -139,37 +140,13 @@ const ChatScreen = ({ navigation, route }) => {
                         >
                             {
                                 messages.map(({ id, data }) => (
-                                    console.log(data),
+                                    // console.log(data),
                                     data.email === auth.currentUser.email ? (
                                     // sender
-                                    <View key={id} style={styles.sender}>
-                                        <Avatar rounded size={30} position="absolute" bottom={-15} right={-5} source={{
-                                            uri: data.photoURL
-                                        }}/>
-                                        { data.postImage &&
-                                            <Image source={{ uri: data.postImage }} style={{ width: 300, height: 150, marginRight: 15 }} />
-                                        }
-                                        <Text style={styles.senderText}>
-                                            {data.message}
-                                        </Text>
-                                    </View>
+                                    <SenderBubble key={id} data={data} />
                                     ) : (
                                     // reciever 
-                                    <View key={id} style={styles.reciever}>
-                                        <Avatar rounded size={30} position="absolute" bottom={-15} left={-5} source={{
-                                            uri: data.photoURL
-                                        }}/>
-                                        <Text style={styles.recieverName}>
-                                            {data.displayName}
-                                        </Text>
-                                        { data.postImage &&
-                                            <Image source={{ uri: data.postImage }} style={{ width: 300, height: 150, marginRight: 15 }} />
-                                        }
-                                        <Text style={styles.recieverText}>
-                                            {data.message}
-                                        </Text>
-                                        
-                                    </View>
+                                    <ReceiverBubble key={id} data={data} />
                                     )
                                 ))
                             }
@@ -211,45 +188,6 @@ const styles = StyleSheet.create({
     scroll: {
         flex: 1,
         justifyContent: 'flex-end',
-    },
-    sender: {
-        padding: 15,
-        backgroundColor: '#ececec',
-        alignSelf: 'flex-end',
-        borderRadius: 20,
-        marginRight: 15,
-        marginBottom: 20,
-        maxWidth: "80%",
-        position: "relative",
-    },
-    senderText: {
-        color: "black",
-        fontWeight: "500",
-        marginRight: 10,
-    },
-    reciever: {
-        padding: 15,
-        backgroundColor: "#e3337d",
-        alignSelf: "flex-start",
-        borderRadius: 20,
-        marginLeft: 15,
-        marginBottom: 20,
-        maxWidth: "80%",
-        position: "relative",
-
-    },
-    recieverText: {
-        color: "white",
-        fontWeight: "500",
-        marginLeft: 10,
-    },
-    recieverName: {
-        position: "absolute",
-        left: 30,
-        bottom: -15,
-        paddingRight: 10,
-        fontSize: 10,
-        color: "black",
     },
     footer: {
         flexDirection: 'row',
