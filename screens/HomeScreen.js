@@ -8,10 +8,17 @@ import TopicTile from '../components/TopicTile'
 const HomeScreen = ({ navigation }) => {
     const [chats, setChats] = useState([])
 
+    /**
+     * Signs authenticated user out and navigates them back to the Login Screen
+     */
     const signOut = () => {
         auth.signOut().then(() => { navigation.replace("Login") })
     }
 
+    /**
+     * Re-renders on update of chats
+     * Pulls messages from corresponding chat
+     */
     useEffect(() => {
         const unsubscribe = db.collection('chats').onSnapshot((snapshot) =>
             setChats(
@@ -25,7 +32,11 @@ const HomeScreen = ({ navigation }) => {
         return unsubscribe;
     }, [])
 
-    //navigates before paint
+    /**
+     * Masthead consists of users profile picture, name and a button to the 
+     * About Screen
+     * Navigates before paint
+     */
     useLayoutEffect(() => {
         navigation.setOptions({
             title: "Spin",
@@ -49,6 +60,11 @@ const HomeScreen = ({ navigation }) => {
         })
     }, [navigation])
 
+    /**
+     * Navigates user to ChatScreen with its id and Chat Name passed as props
+     * @param {number} id 
+     * @param {string} chatName 
+     */
     const enterChat = (id, chatName) => {
         navigation.navigate('Chat', {
             id,
@@ -56,6 +72,9 @@ const HomeScreen = ({ navigation }) => {
         })
     }
 
+    /**
+     * Renders a list of chats, Add Chat Button
+     */
     return (
         <SafeAreaView>
             <ScrollView style={styles.container}>
