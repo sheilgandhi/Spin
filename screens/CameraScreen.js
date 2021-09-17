@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-end',
         justifyContent: 'space-evenly',
+        marginBottom: 15,
         // backgroundColor: 'white'
       },
       innerButtonContainer: {
@@ -98,9 +99,7 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
       },
       image: {
-        position: 'absolute',
-        bottom: 5,
-        right: 5
+        
       },
       text: {
         fontSize: 18,
