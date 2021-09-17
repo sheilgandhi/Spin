@@ -38,6 +38,7 @@ const CameraScreen = ({ navigation, route }) => {
         <View style={styles.container}>
           <Camera style={styles.camera} type={type} ratio={"16:9"} ref={ref => setCamera(ref)}>
             <View style={styles.buttonContainer}>
+              <View style={styles.innerButtonContainer}>
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
@@ -47,24 +48,25 @@ const CameraScreen = ({ navigation, route }) => {
                       : Camera.Constants.Type.back
                   );
                 }}>
-                <Ionicons name="camera-reverse" size={26} color="#e3337d" />
+                <Ionicons name="camera-reverse" size={36} color="#e3337d" />
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.button}
                 onPress={takePicture}
               >
-                <Entypo name="circle" size={56} color="#e3337d" />
+                <Entypo name="circle" size={96} color="#e3337d" />
               </TouchableOpacity>
                 {
-                    image &&
+                    image ?
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => navigation.navigate('Chat', {cameraImage: image, id: id, chatName: chatName})}
                     >
                       <Ionicons name="send" size={26} color="#e3337d" />
-                      <Image source={{uri: image}} style={styles.image}/>
                     </TouchableOpacity>
+                    : <View/> // So its centers
                 }
+                </View>
             </View>
           </Camera>
         </View>
@@ -83,19 +85,19 @@ const styles = StyleSheet.create({
       buttonContainer: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'flex-end',
         justifyContent: 'space-evenly',
+        marginBottom: 15,
         // backgroundColor: 'white'
       },
-      button: {
-        // flex: 1,
-        // alignSelf: 'flex-end',
-        // alignItems: 'center',
+      innerButtonContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
       },
       image: {
-        position: 'absolute',
-        bottom: 5,
-        right: 5
+        
       },
       text: {
         fontSize: 18,
