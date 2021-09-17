@@ -29,7 +29,7 @@ const CameraScreen = ({ navigation, route }) => {
     const takePicture = async () => {
         if(camera){
             const data = await camera.takePictureAsync(null)
-            console.log(data)
+            // console.log(data)
             setImage(data.uri)
         }
     }
@@ -63,9 +63,9 @@ const CameraScreen = ({ navigation, route }) => {
                       onPress={() => navigation.navigate('Chat', {cameraImage: image, id: id, chatName: chatName})}
                     >
                       <Ionicons name="send" size={36} color="#e3337d" />
-                      <Image source={{ uri: image }} style={{ width: 30, height: 30 }} />
+                      <Image source={{ uri: image }} style={{ width: 60, height: 60 }} />
                     </TouchableOpacity>
-                    : <View style={{ width: 36 }} />
+                    : <View style={{ width: 136 }} />
                 }
                 </View>
             </View>
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-end',
         justifyContent: 'space-evenly',
-        marginBottom: 15,
+        // marginLeft: 36,
         // backgroundColor: 'white'
       },
       innerButtonContainer: {
@@ -98,8 +98,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         paddingBottom: 15,
       },
-      image: {
-        
+      button: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly'
       },
       text: {
         fontSize: 18,
