@@ -15,6 +15,8 @@ const ChatScreen = ({ navigation, route }) => {
     const scrollViewRef = useRef();
     const [image, setImage] = useState(null);
 
+    const { cameraImage } = route.params;
+
     /**
      * On load of Image Picker asks for Permission to user images
      * https://docs.expo.dev/versions/latest/sdk/imagepicker/
@@ -184,9 +186,9 @@ const ChatScreen = ({ navigation, route }) => {
                         </ScrollView>
 
                         <View style={styles.footer}>
-                            {/* <TouchableOpacity onPress={() => navigation.navigate("Camera")} activeOpacity={0.5} style={{ marginRight: 15 }}>
+                            <TouchableOpacity onPress={() => navigation.navigate("Camera", {id: route.params.id, chatName: route.params.chatName})} activeOpacity={0.5} style={{ marginRight: 15 }}>
                                 <Ionicons name="camera" size={26} color="#e3337d" />
-                            </TouchableOpacity> */}
+                            </TouchableOpacity>
                             <TouchableOpacity onPress={pickImage} activeOpacity={0.5} style={{ marginRight: 15 }}>
                                 <Ionicons name="image" size={24} color="#e3337d" />
                             </TouchableOpacity>

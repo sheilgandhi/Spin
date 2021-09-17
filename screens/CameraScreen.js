@@ -1,12 +1,16 @@
 import { Camera } from 'expo-camera';
 import React, { useEffect, useState, useRef } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
+import { Entypo, Ionicons } from "@expo/vector-icons"
 
-const CameraScreen = ({ navigation }) => {
+
+const CameraScreen = ({ navigation, route }) => {
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.front);
     const [camera, setCamera] = useState(null);
     const [image, setImage] = useState(null);
+
+    const { id, chatName } = route.params;
 
     useEffect(() => {
         (async () => {
@@ -25,6 +29,7 @@ const CameraScreen = ({ navigation }) => {
     const takePicture = async () => {
         if(camera){
             const data = await camera.takePictureAsync(null)
+            console.log(data)
             setImage(data.uri)
         }
     }
@@ -42,13 +47,24 @@ const CameraScreen = ({ navigation }) => {
                       : Camera.Constants.Type.back
                   );
                 }}>
-                <Text style={styles.text}> Flip </Text>
-                <Text onPress={takePicture} style={styles.text}>SNAP</Text>
-                {
-                    image && 
-                    <Image source={{uri: image}} style={{ flex: 1 }}/>
-                }
+                <Ionicons name="camera-reverse" size={26} color="#e3337d" />
               </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={takePicture}
+              >
+                <Entypo name="circle" size={56} color="#e3337d" />
+              </TouchableOpacity>
+                {
+                    image &&
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => navigation.navigate('Chat', {cameraImage: image, id: id, chatName: chatName})}
+                    >
+                      <Ionicons name="send" size={26} color="#e3337d" />
+                      <Image source={{uri: image}} style={styles.image}/>
+                    </TouchableOpacity>
+                }
             </View>
           </Camera>
         </View>
@@ -66,14 +82,20 @@ const styles = StyleSheet.create({
       },
       buttonContainer: {
         flex: 1,
-        backgroundColor: 'transparent',
         flexDirection: 'row',
-        margin: 20,
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        // backgroundColor: 'white'
       },
       button: {
-        flex: 0.1,
-        alignSelf: 'flex-end',
-        alignItems: 'center',
+        // flex: 1,
+        // alignSelf: 'flex-end',
+        // alignItems: 'center',
+      },
+      image: {
+        position: 'absolute',
+        bottom: 5,
+        right: 5
       },
       text: {
         fontSize: 18,
