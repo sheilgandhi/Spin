@@ -17,7 +17,7 @@ const ChatScreen = ({ navigation, route }) => {
 
     const { cameraImage } = route.params;
 
-    useEffect(() => setImage(cameraImage), [])
+    useEffect(() => setImage(cameraImage), [cameraImage])
 
     /**
      * On load of Image Picker asks for Permission to user images
@@ -49,7 +49,7 @@ const ChatScreen = ({ navigation, route }) => {
 
     if (!result.cancelled) {
       setImage(result.uri);
-      console.log(image)
+    //   console.log(image)
     }
 
   };
