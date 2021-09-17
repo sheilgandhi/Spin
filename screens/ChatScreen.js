@@ -17,6 +17,8 @@ const ChatScreen = ({ navigation, route }) => {
 
     const { cameraImage } = route.params;
 
+    useEffect(() => setImage(cameraImage), [])
+
     /**
      * On load of Image Picker asks for Permission to user images
      * https://docs.expo.dev/versions/latest/sdk/imagepicker/
