@@ -62,9 +62,10 @@ const CameraScreen = ({ navigation, route }) => {
                       style={styles.button}
                       onPress={() => navigation.navigate('Chat', {cameraImage: image, id: id, chatName: chatName})}
                     >
-                      <Ionicons name="send" size={26} color="#e3337d" />
+                      <Ionicons name="send" size={36} color="#e3337d" />
+                      <Image source={{ uri: image }} style={{ width: 30, height: 30 }} />
                     </TouchableOpacity>
-                    : <View/> // So its centers
+                    : <View style={{ width: 36 }} />
                 }
                 </View>
             </View>
@@ -95,6 +96,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-evenly',
+        paddingBottom: 15,
       },
       image: {
         
