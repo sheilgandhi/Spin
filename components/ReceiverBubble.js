@@ -4,7 +4,7 @@ import { Avatar } from 'react-native-elements'
 
 const ReceiverBubble = ({ data }) => {
     return (
-        <View key={id} style={styles.reciever}>
+        <View style={styles.reciever}>
             <Avatar rounded size={30} position="absolute" bottom={-15} left={-5} source={{
                 uri: data.photoURL
             }}/>
