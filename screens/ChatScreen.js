@@ -6,8 +6,8 @@ import { StatusBar } from 'expo-status-bar'
 import { auth, db, storage } from '../firebase'
 import * as firebase from "firebase";
 import * as ImagePicker from 'expo-image-picker';
-import SenderBubble from '../components/SenderBubble'
-import ReceiverBubble from '../components/ReceiverBubble'
+import SenderBubble from '../presentation/SenderBubble'
+import ReceiverBubble from '../presentation/ReceiverBubble'
 
 const ChatScreen = ({ navigation, route }) => {
     const [input, setInput] = useState('')

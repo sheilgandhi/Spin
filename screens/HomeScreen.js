@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } fr
 import { Avatar } from 'react-native-elements'
 import { auth, db } from '../firebase'
 import { AntDesign, SimpleLineIcons } from "@expo/vector-icons"
-import TopicTile from '../components/TopicTile'
+import TopicTile from '../presentation/TopicTile'
 
 const HomeScreen = ({ navigation }) => {
     const [chats, setChats] = useState([])
