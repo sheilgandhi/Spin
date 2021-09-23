@@ -4,10 +4,19 @@ import { StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native'
 import { Button, Input, Image, ThemeProvider } from "react-native-elements"
 import { auth } from '../firebase'
 
-const LoginScreen = ({navigation}) => {
+/**
+ * User can Login via this Screen
+ * @param {*} navigation 
+ * @returns LoginScreen
+ */
+const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    /**
+     * If there is a user authentication token,
+     * take them to the home page
+     */
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
             if(authUser){
@@ -18,12 +27,18 @@ const LoginScreen = ({navigation}) => {
         return unsubscribe;
     }, [])
 
-
+    /**
+     * Encrypted connection between client and Firebase to 
+     * sign user in
+     */
     const signIn = () => {
         auth.signInWithEmailAndPassword(email, password)
         .catch((error) => alert(error))
     }
 
+    /**
+     * Theme used for React Native Elements Button
+     */
     const theme = {
         colors: {
           primary: '#e3337d',

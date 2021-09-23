@@ -1,6 +1,11 @@
 import React from 'react'
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 
+/**
+ * A Screen for providing the user with rules and an app description
+ * @param {*} navigation 
+ * @returns AboutScreen
+ */
 const AboutScreen = ({ navigation }) => {
 
     /**

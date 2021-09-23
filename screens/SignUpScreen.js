@@ -4,20 +4,32 @@ import { StyleSheet, View, KeyboardAvoidingView } from 'react-native'
 import { Button, Input, Text, ThemeProvider } from "react-native-elements"
 import { auth } from '../firebase'
 
+/**
+ * A screen where a user can register for Spin
+ * @param {*} navigation 
+ * @returns SignUpScreen
+ */
 const SignUpScreen = ({ navigation }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [imageUrl, setImageUrl] = useState("");
 
-    // navigates before paint
+    /**
+     * Navigates before paint
+     * Adds visible next to back button for iOS
+     */
     useLayoutEffect(() => {
         navigation.setOptions({
-            headerBackTitle: "Back", // visible next to back button for iOS
+            headerBackTitle: "Back",
 
         })
     }, [navigation])
 
+    /**
+     * Encrypted connection to Firebase Authentication
+     * Which then adds properties for the user profile
+     */
     const signUp = () => {
         auth.createUserWithEmailAndPassword(email, password)
         .then(authUser => {
@@ -29,6 +41,9 @@ const SignUpScreen = ({ navigation }) => {
         .catch((error) => alert(error.message));
     }
 
+    /**
+     * Theme used for React Native Elements Button
+     */
     const theme = {
         colors: {
           primary: '#e3337d',

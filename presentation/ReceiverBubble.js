@@ -2,6 +2,12 @@ import React from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
 import { Avatar } from 'react-native-elements'
 
+/**
+ * A UI Component for the Receiver in ChatScreen
+ * Message Document gets passed in its props
+ * @param {*} data 
+ * @returns ReceiverBubble
+ */
 const ReceiverBubble = ({ data }) => {
     return (
         <View style={styles.reciever}>
@@ -11,7 +17,7 @@ const ReceiverBubble = ({ data }) => {
             <Text style={styles.recieverName}>
                 {data.displayName}
             </Text>
-            { data.postImage &&
+            { data.postImage && // If there is an image
                 <Image source={{ uri: data.postImage }} style={{ width: 300, height: 150, marginRight: 15 }} />
             }
             <Text style={styles.recieverText}>

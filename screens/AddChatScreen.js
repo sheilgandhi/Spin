@@ -4,6 +4,11 @@ import { Button, Input, ThemeProvider } from 'react-native-elements'
 import Icon from "react-native-vector-icons/FontAwesome"
 import { db } from '../firebase'
 
+/**
+ * A Screen to add a new Chat to the app
+ * @param {*} navigation 
+ * @returns AddChatScreen
+ */
 const AddChatScreen = ({ navigation }) => {
     const [input, setInput] = useState("");
 

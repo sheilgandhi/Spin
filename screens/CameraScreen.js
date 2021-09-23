@@ -3,15 +3,24 @@ import React, { useEffect, useState, useRef } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native'
 import { Entypo, Ionicons } from "@expo/vector-icons"
 
-
+/**
+ * A screen which shows the camera output
+ * @param {*} navigation 
+ * @param {*} route 
+ * @returns CameraScreen
+ */
 const CameraScreen = ({ navigation, route }) => {
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.front);
     const [camera, setCamera] = useState(null);
     const [image, setImage] = useState(null);
 
-    const { id, chatName } = route.params;
+    const { id, chatName } = route.params; // objects passed from ChatScreen on navigation
 
+    /**
+     * Asynchronous call requesting camera permission
+     * https://docs.expo.dev/versions/latest/sdk/camera/
+     */
     useEffect(() => {
         (async () => {
         const { status } = await Camera.requestPermissionsAsync();
@@ -26,6 +35,10 @@ const CameraScreen = ({ navigation, route }) => {
         return <Text>No access to camera</Text>;
     }
 
+    /**
+     * Asynchronous to capture an image
+     * The temporary file uri is set to state
+     */
     const takePicture = async () => {
         if(camera){
             const data = await camera.takePictureAsync(null)
@@ -35,11 +48,13 @@ const CameraScreen = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
+          {/* Camera Component taking props of which camera to use and ratio */}
           <Camera style={styles.camera} type={type} ratio={"16:9"} ref={ref => setCamera(ref)}>
             <View style={styles.buttonContainer}>
               <View style={styles.innerButtonContainer}>
               <TouchableOpacity
                 style={styles.button}
+                // Flips camera
                 onPress={() => {
                   setType(
                     type === Camera.Constants.Type.back
@@ -56,7 +71,7 @@ const CameraScreen = ({ navigation, route }) => {
                 <Entypo name="circle" size={96} color="#e3337d" />
               </TouchableOpacity>
                 {
-                    image ?
+                    image ? // Checks to display preview image
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => navigation.navigate('Chat', {cameraImage: image, id: id, chatName: chatName})}
@@ -64,7 +79,7 @@ const CameraScreen = ({ navigation, route }) => {
                       <Ionicons name="send" size={36} color="#e3337d" />
                       <Image source={{ uri: image }} style={{ width: 60, height: 60 }} />
                     </TouchableOpacity>
-                    : <View style={{ width: 136 }} />
+                    : <View style={{ width: 136 }} /> // To center camera button
                 }
                 </View>
             </View>

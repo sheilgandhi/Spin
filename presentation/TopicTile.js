@@ -3,9 +3,19 @@ import { StyleSheet, Text, View } from 'react-native'
 import { ListItem, Avatar } from 'react-native-elements'
 import { db } from '../firebase';
 
+/**
+ * A UI Component for rendering the List Items in the Home Screen
+ * @param {string} id 
+ * @param {string} chatName 
+ * @param {void} enterChat 
+ * @returns TopicTile
+ */
 const TopicTile = ({ id, chatName, enterChat }) => {
     const [messages, setMessages] = useState([]);
 
+    /**
+     * Pulls the messages for the Chat, required for the preview message
+     */
     useEffect(() => {
         const unsubscribe = db
             .collection('chats')
@@ -21,6 +31,7 @@ const TopicTile = ({ id, chatName, enterChat }) => {
 
     return (
         <ListItem key={id} onPress={() => enterChat(id, chatName)}>
+            {/* If photoURL is undefined then use placeholder image */}
             <Avatar rounded source={{ uri: messages?.[0]?.photoURL || `https://cencup.com/wp-content/uploads/2019/07/avatar-placeholder.png` }}/>
 
             <ListItem.Content>

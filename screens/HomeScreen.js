@@ -5,6 +5,12 @@ import { auth, db } from '../firebase'
 import { AntDesign, SimpleLineIcons } from "@expo/vector-icons"
 import TopicTile from '../presentation/TopicTile'
 
+/**
+ * Pulls List of Chats to display
+ * A Navigation Button is display to add a new chat
+ * @param {*} navigation 
+ * @returns HomeScreen
+ */
 const HomeScreen = ({ navigation }) => {
     const [chats, setChats] = useState([])
 

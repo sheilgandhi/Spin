@@ -9,15 +9,22 @@ import * as ImagePicker from 'expo-image-picker';
 import SenderBubble from '../presentation/SenderBubble'
 import ReceiverBubble from '../presentation/ReceiverBubble'
 
+/**
+ * A Template Page for all Chats to use
+ * Connects to Firebase to pull appropriate information
+ * @param {*} navigation 
+ * @param {*} route 
+ * @returns ChatScreen
+ */
 const ChatScreen = ({ navigation, route }) => {
     const [input, setInput] = useState('')
     const [messages, setMessages] = useState([])
     const scrollViewRef = useRef();
     const [image, setImage] = useState(null);
 
-    const { cameraImage } = route.params;
+    const { cameraImage } = route.params; // Gets camera image uri from Camera Screen
 
-    useEffect(() => setImage(cameraImage), [cameraImage])
+    useEffect(() => setImage(cameraImage), [cameraImage]) // Updates image every time cameraImage changes
 
     /**
      * On load of Image Picker asks for Permission to user images
