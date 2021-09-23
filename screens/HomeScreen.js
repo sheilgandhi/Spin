@@ -16,6 +16,7 @@ const HomeScreen = ({ navigation }) => {
 
     /**
      * Signs authenticated user out and navigates them back to the Login Screen
+     * https://youtu.be/MJzmZ9qmdaE
      */
     const signOut = () => {
         auth.signOut().then(() => { navigation.replace("Login") })
@@ -24,6 +25,7 @@ const HomeScreen = ({ navigation }) => {
     /**
      * Re-renders on update of chats
      * Pulls messages from corresponding chat
+     * https://youtu.be/MJzmZ9qmdaE
      */
     useEffect(() => {
         const unsubscribe = db.collection('chats').onSnapshot((snapshot) =>
@@ -42,6 +44,7 @@ const HomeScreen = ({ navigation }) => {
      * Masthead consists of users profile picture, name and a button to the 
      * About Screen
      * Navigates before paint
+     * https://youtu.be/MJzmZ9qmdaE
      */
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -68,6 +71,7 @@ const HomeScreen = ({ navigation }) => {
 
     /**
      * Navigates user to ChatScreen with its id and Chat Name passed as props
+     * https://reactnavigation.org/docs/params/
      * @param {number} id 
      * @param {string} chatName 
      */

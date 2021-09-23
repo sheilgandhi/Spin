@@ -20,6 +20,11 @@ const globalScreenOptions = {
   headerTintColor: "white",
 }
 
+/**
+ * Holds all routes and Stack Navigation for the app
+ * https://reactnavigation.org/docs/hello-react-navigation
+ * @returns App
+ */
 export default function App() {
   return (
     // NavigationContainer stacks screens

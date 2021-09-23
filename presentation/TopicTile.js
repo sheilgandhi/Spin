@@ -15,6 +15,7 @@ const TopicTile = ({ id, chatName, enterChat }) => {
 
     /**
      * Pulls the messages for the Chat, required for the preview message
+     * https://youtu.be/MJzmZ9qmdaE
      */
     useEffect(() => {
         const unsubscribe = db

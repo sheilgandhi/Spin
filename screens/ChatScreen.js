@@ -63,6 +63,7 @@ const ChatScreen = ({ navigation, route }) => {
     /**
      * The masthead displays the image of most recent message sender, chat name 
      * and chrome to navigate to About page which consists of chat rules
+     * https://youtu.be/MJzmZ9qmdaE
      */
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -94,6 +95,8 @@ const ChatScreen = ({ navigation, route }) => {
      * In terms of Update - The way the image is uploaded, it is uploaded after creation
      * and appended to newly created message
      * If no input or image then return
+     * https://youtu.be/MJzmZ9qmdaE
+     * https://youtu.be/dBotWYKYYWc
      */
     const sendMessage = () => {
         // If both image and input (message) are null leave method
@@ -146,6 +149,7 @@ const ChatScreen = ({ navigation, route }) => {
      * Similar to a useEffect, re-renders on update of messages
      * Pulls messages from corresponding chat
      * Does first render on route change
+     * https://youtu.be/MJzmZ9qmdaE
      */
     useLayoutEffect(() => {
         const unsubscribe = db

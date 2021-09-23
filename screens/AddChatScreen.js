@@ -15,6 +15,7 @@ const AddChatScreen = ({ navigation }) => {
     /**
      * Asynchronuously performs (C)RUD - Creates new Chat
      * Then navigates back to Home Screen
+     * https://youtu.be/MJzmZ9qmdaE
      */
     const createChat = async () => {
         await db
@@ -41,6 +42,7 @@ const AddChatScreen = ({ navigation }) => {
 
     /**
      * Provides appropriate styling props to React Native Elements Button
+     * https://stackoverflow.com/questions/42126452/how-can-i-specify-a-default-color-for-a-react-native-elements-button
      */
     const theme = {
         colors: {

@@ -16,6 +16,7 @@ const LoginScreen = ({ navigation }) => {
     /**
      * If there is a user authentication token,
      * take them to the home page
+     * https://youtu.be/MJzmZ9qmdaE
      */
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -30,6 +31,7 @@ const LoginScreen = ({ navigation }) => {
     /**
      * Encrypted connection between client and Firebase to 
      * sign user in
+     * https://youtu.be/MJzmZ9qmdaE
      */
     const signIn = () => {
         auth.signInWithEmailAndPassword(email, password)
@@ -38,6 +40,7 @@ const LoginScreen = ({ navigation }) => {
 
     /**
      * Theme used for React Native Elements Button
+     * https://stackoverflow.com/questions/42126452/how-can-i-specify-a-default-color-for-a-react-native-elements-button
      */
     const theme = {
         colors: {

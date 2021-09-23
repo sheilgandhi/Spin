@@ -18,6 +18,7 @@ const SignUpScreen = ({ navigation }) => {
     /**
      * Navigates before paint
      * Adds visible next to back button for iOS
+     * https://youtu.be/MJzmZ9qmdaE
      */
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -29,6 +30,7 @@ const SignUpScreen = ({ navigation }) => {
     /**
      * Encrypted connection to Firebase Authentication
      * Which then adds properties for the user profile
+     * https://youtu.be/MJzmZ9qmdaE
      */
     const signUp = () => {
         auth.createUserWithEmailAndPassword(email, password)
@@ -43,6 +45,7 @@ const SignUpScreen = ({ navigation }) => {
 
     /**
      * Theme used for React Native Elements Button
+     * https://stackoverflow.com/questions/42126452/how-can-i-specify-a-default-color-for-a-react-native-elements-button
      */
     const theme = {
         colors: {
