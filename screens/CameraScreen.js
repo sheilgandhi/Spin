@@ -29,7 +29,6 @@ const CameraScreen = ({ navigation, route }) => {
     const takePicture = async () => {
         if(camera){
             const data = await camera.takePictureAsync(null)
-            // console.log(data)
             setImage(data.uri)
         }
     }

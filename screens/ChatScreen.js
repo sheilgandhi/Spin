@@ -49,7 +49,6 @@ const ChatScreen = ({ navigation, route }) => {
 
     if (!result.cancelled) {
       setImage(result.uri);
-    //   console.log(image)
     }
 
   };
@@ -110,7 +109,6 @@ const ChatScreen = ({ navigation, route }) => {
                         const blob = await res.blob() // coverts file path to blob
 
                     const uploadTask = storage.ref(`posts/${doc.id}`).put(blob); // uploads blob to firebase storage bucket
-                    // console.log(uploadTask)
                     setImage(null)
 
                     /*
@@ -132,7 +130,6 @@ const ChatScreen = ({ navigation, route }) => {
             }
         )
 
-        // console.log("Upload done")
         setInput(""); // Clears input
         Keyboard.dismiss(); // Hides Keyboard
 
@@ -175,7 +172,6 @@ const ChatScreen = ({ navigation, route }) => {
                         >
                             {
                                 messages.map(({ id, data }) => (
-                                    // console.log(data),
                                     data.email === auth.currentUser.email ? (
                                     // sender
                                     <SenderBubble key={id} data={data} />
